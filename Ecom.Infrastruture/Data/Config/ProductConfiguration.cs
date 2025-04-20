@@ -15,9 +15,17 @@ namespace Ecom.Infrastruture.Data.Config
         {
             builder.Property(p => p.Name).IsRequired().HasMaxLength(30);
             builder.Property(p => p.Description).IsRequired().HasMaxLength(30);
-            builder.Property(p => p.Price).IsRequired().HasPrecision(18, 2);
-            builder.HasData(new Product { Id = 1, Name = "XO", Description = "Children Toys", CategoryId = 1, Price = 40 });
+            builder.Property(p => p.NewPrice).IsRequired().HasPrecision(18, 2);
+            builder.HasData(new Product { Id = 1, Name = "XO", Description = "Children Toys", CategoryId = 1, NewPrice = 40, OldPrice = 4 });
 
+        }
+    }
+
+    public class PhotoConfiguration : IEntityTypeConfiguration<Photo>
+    {
+        public void Configure(EntityTypeBuilder<Photo> builder)
+        {
+            builder.HasData(new Photo { Id = 1, ImageName = "XO Photo", ProductId = 1 });
         }
     }
 }

@@ -3,6 +3,7 @@ using Ecom.Infrastruture.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecom.Infrastruture.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250417170000_removePriceAndDescriptionFromPhoto")]
+    partial class removePriceAndDescriptionFromPhoto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,14 +74,6 @@ namespace Ecom.Infrastruture.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Photos");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ImageName = "XO Photo",
-                            ProductId = 1
-                        });
                 });
 
             modelBuilder.Entity("Ecom.Core.Entities.Product.Product", b =>
@@ -102,11 +97,8 @@ namespace Ecom.Infrastruture.Data.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<decimal>("NewPrice")
+                    b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("OldPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
@@ -122,8 +114,7 @@ namespace Ecom.Infrastruture.Data.Migrations
                             CategoryId = 1,
                             Description = "Children Toys",
                             Name = "XO",
-                            NewPrice = 40m,
-                            OldPrice = 4m
+                            Price = 40m
                         });
                 });
 
