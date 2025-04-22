@@ -98,5 +98,43 @@ namespace Ecom.Infrastruture.Repositories
             return true;
 
         }
+
+        public async Task<IEnumerable<ProductDTO>> GetAllAsync(string sort, int? categoryId, int pageNumber, int pageSize)
+        {
+            var query = context.Products
+                .Include(p => p.Category)
+                .Include(p => p.photos)
+                .AsNoTracking();
+            //filter
+            if (categoryId == null)
+            {
+                query = query.Where(p => p.CategoryId == categoryId);
+            }
+
+            //sort
+            if (!string.IsNullOrEmpty(sort))
+            {
+                query = sort switch
+                {
+                    "PriceAsc" => query.OrderBy(p => p.NewPrice),
+                    "PriceDes" => query.OrderByDescending(p => p.NewPrice),
+                    _ => query.OrderBy(p => p.Name),
+                };
+            }
+            else
+            {
+                query = query.OrderBy(p => p.Name);
+            }
+
+            pageSize = pageSize > 0 ? pageSize : 10;
+            pageNumber = pageNumber > 0 ? pageNumber : 1;
+
+            query = query.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
+
+            var result = mapper.Map<List<ProductDTO>>(query);
+
+            return result;
+        }
+
     }
 }
